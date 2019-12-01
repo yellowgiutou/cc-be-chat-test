@@ -56,10 +56,7 @@ function dfaUtil(worldList) {
         let node = this.root;
         for (let index = 0; index < inputStr.length; index++) {
             const ch = inputStr[index];
-            console.log("外部打印：ch:%s  index:%s", ch, index);
-            // console.log("本次处理ch:%s  node:%s", ch, util.inspect(node, false, null));
             node = node.getChild(ch);
-            // console.log("本次处理ch:%s  node:%s", ch, node);
             if (typeof (node) == "undefined") {
                 //如果没有找到匹配的节点，说明此轮判断结束
                 //需要判断是否有符合条件的短搜索路径
@@ -96,13 +93,11 @@ function dfaUtil(worldList) {
             }
             //如果是长终节点，说明已经找到最长路径了，于是本轮结束
             else if (node.Flag == nodeFlag.LongTerminal) {
-                console.log("进入到长终点了：ch:%s", ch);
                 //将对应的index添加到本轮的索引列表中
                 randIndexItem = {};
                 randIndexItem.Index = index;
                 randIndexItem.Flag = node.Flag;
                 roundIndexList.push(randIndexItem);
-                console.log("本次处理ch:%s index:%s roundIndexList:%s", ch, index, util.inspect(roundIndexList, false, null));
 
                 // 将本轮的索引列表添加到最终的索引列表中
                 finalIndexItem = {};
@@ -167,10 +162,9 @@ function dfaUtil(worldList) {
 
     //处理单词，用指定字符替换特殊字符
     this.handleWord = function (inputStr, replaceCh) {
-        console.log("inputStr:%s, replaceCh:%s", inputStr, replaceCh);
         //最终的索引范围列表<索引下限、索引上限>
         let finalIndexList = this.searchWord(inputStr);
-        console.log(util.inspect(finalIndexList, false, null));
+        // console.log(util.inspect(finalIndexList, false, null));
 
         //判断是否需要处理
         if (finalIndexList.length == 0) {
@@ -208,8 +202,6 @@ function dfaUtil(worldList) {
             this.insertNode(this.root, line, 0);
         }
     }
-
-    // console.log(util.inspect(this.root, false, null));
 }
 
 module.exports = dfaUtil;
