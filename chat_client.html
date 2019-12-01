@@ -13,10 +13,12 @@
 <body>
     <div id="mess" style="font-size: 50px;">等待连接服务端...</div>
     <div id="txtHisMessage" style="height: 500px;width: 90%;"></div>
-    <!-- <textarea name="txtHisMessage" id="txtHisMessage" multiple="true" style="height: 500px;width: 90%;" >
-    </textarea> -->
-    <!-- <input type="text" name="txtHisMessage" multiple="true" style="height: 500px;width: 90%;" /> -->
-    <br/> 
+    
+    请按照顺序操作：<br/>
+    1.输入姓名<br/>
+    2.点击“进入聊天”<br/>
+	3.输入聊天内容<br/>
+	4.点击发送<br/> 
     姓名   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：<input type="text" id="txtName" name="txtName"  style="width: 200px;"/>
     <input type="button" name="btnName" value="进入聊天" onclick="confirmName()" />
     <font color="red">注意：服务端未做名字是否重复的校验，请不要使用相同名字测试。</font>

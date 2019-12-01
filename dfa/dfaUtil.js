@@ -1,3 +1,5 @@
+//使用dfa算法实现的敏感字替换方法
+
 const node = require("./node");
 const nodeFlag = require("./nodeFlag");
 var util = require('util');
