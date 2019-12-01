@@ -31,22 +31,22 @@ function formation(second) {
     let min = 0;
 
     //计算天数
-    // if (second > daySecond) {
-    day = Math.round(second / daySecond);
-    second = second - (day * daySecond);
-    // }
+    if (second > daySecond) {
+        day = Math.round(second / daySecond);
+        second = second - (day * daySecond);
+    }
 
     //计算小时
-    // if (second > hourSecod) {
-    hour = Math.round(second / hourSecod);
-    second = second - (hour * hourSecod);
-    // }
+    if (second > hourSecod) {
+        hour = Math.round(second / hourSecod);
+        second = second - (hour * hourSecod);
+    }
 
     //计算分钟
-    // if (second > minSecond) {
-    min = Math.round(second / minSecond);
-    second = second - (min * minSecond);
-    // }
+    if (second > minSecond) {
+        min = Math.round(second / minSecond);
+        second = second - (min * minSecond);
+    }
 
     //追加秒数
     let timeStr = dataLeftCompleting(2, "0", day) + "d " + dataLeftCompleting(2, "0", hour)
