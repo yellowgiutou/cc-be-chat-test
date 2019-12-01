@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .kuang{text-align: center;margin-top:200px;}
+        #mess{text-align: center}
+        .value{width: 200px;height:200px;border:1px solid;text-align: center;line-height: 200px;display: inline-block;}
+    </style>
+
+</head>
+<body>
+    <div id="mess" style="font-size: 50px;">等待连接服务端...</div>
+    <div id="txtHisMessage" style="height: 500px;width: 90%;"></div>
+    <!-- <textarea name="txtHisMessage" id="txtHisMessage" multiple="true" style="height: 500px;width: 90%;" >
+    </textarea> -->
+    <!-- <input type="text" name="txtHisMessage" multiple="true" style="height: 500px;width: 90%;" /> -->
+    <br/> 
+    姓名   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：<input type="text" id="txtName" name="txtName"  style="width: 200px;"/>
+    <input type="button" name="btnName" value="进入聊天" onclick="confirmName()" />
+    <font color="red">注意：服务端未做名字是否重复的校验，请不要使用相同名字测试。</font>
+    <br/> 
+    <br/> 
+    聊天内容：
+    <textarea name="txtMessage"  id="txtMessage" multiple="true" style="height: 100px;width: 70%;" ></textarea>
+    <input type="button" name="btnSemdMessage" value="发送" onclick="sendMessage()" style="height: 100px;width: 100px;"/>
+</body>
+
+    <script type="text/javascript">
+        var mess = document.getElementById("mess");
+        var ws;
+     
+        function confirmName(){
+            var name = document.getElementById("txtName").value;
+            if(name==""){
+                alert("请先确认姓名！");
+                return;
+            }
+
+            var txtName = document.getElementById("txtName");
+            txtName.disabled="true";
+
+            //连接客户端
+            ws = new WebSocket('ws://localhost:10000');
+            ws.onopen = function(e){
+                console.log("连接服务器成功");
+                mess.innerHTML = "连接服务器成功"
+                var info={};
+                info.UserName=name;
+                info.Message="";
+                info.SendTime=new Date();
+
+                //进入聊天室
+                var inputChatSendObj={};
+                inputChatSendObj.Code="input_chat";
+                inputChatSendObj.Message=info;
+                inputChatSendObj.Status=0;
+                inputChatSendObj.SendTime=new Date();
+                var sendText=JSON.stringify(inputChatSendObj);
+                ws.send(sendText);
+
+                //获取历史信息
+                var hisSendObj={};
+                hisSendObj.Code="getHistory";
+                hisSendObj.Message=info;
+                hisSendObj.Status=0;
+                hisSendObj.SendTime=new Date();
+                var sendText=JSON.stringify(hisSendObj);
+                ws.send(sendText);
+            }
+            ws.onclose = function(e){
+                console.log("服务器关闭");
+            }
+            ws.onerror = function(){
+                console.log("连接出错");
+            }
+
+            ws.onmessage = function(e){
+                try{
+                    console.log(e);
+                    var sendObj=JSON.parse(e.data)
+
+                    //获取历史列表
+                    if(sendObj.Code=="getHistory"){
+                      if(sendObj.Message){
+                        for(var i=0;i<sendObj.Message.length;i++){
+                            var info=sendObj.Message[i];
+                            var addmsg= info.UserName+":"+info.Message;
+                            var oldhtml= document.getElementById("txtHisMessage").innerHTML;
+                            var newhtml=oldhtml+addmsg+"<br/>";
+                            document.getElementById("txtHisMessage").innerHTML=newhtml;
+                        }
+                      }
+                    }
+                    else if(sendObj.Code=="input_chat"){
+                        //推送单条信息
+                        var info=sendObj.Message;
+                        var addmsg= info.UserName+":"+info.Message;
+                        var oldhtml= document.getElementById("txtHisMessage").innerHTML;
+                        var newhtml=oldhtml+addmsg+"<br/>";
+                        document.getElementById("txtHisMessage").innerHTML=newhtml;
+                    }else{
+                        //推送单条信息
+                        var info=sendObj.Message;
+                        var addmsg= info.UserName+":"+info.Message;
+                        var oldhtml= document.getElementById("txtHisMessage").innerHTML;
+                        var newhtml=oldhtml+addmsg+"<br/>";
+                        document.getElementById("txtHisMessage").innerHTML=newhtml;
+                    }
+                   
+                } catch(error){
+                     console.log(error);
+                }
+            }
+        }
+
+        //发送聊天
+        function sendMessage() {
+            var name = document.getElementById("txtName");
+            if(name.disabled!=true){
+                alert("请选点击进入聊天室按钮");
+                return;
+            }
+
+            var name = document.getElementById("txtName").value;
+            var msg = document.getElementById("txtMessage").value;
+            if(msg==""){
+                return;
+            }
+
+            var info={};
+            info.UserName=name;
+            info.Message=msg;
+            info.SendTime=new Date();
+
+            var sendObj={};
+            sendObj.Code="sendmsg";
+            sendObj.Message=info;
+            sendObj.Status=0;
+            sendObj.SendTime=new Date();
+
+            var sendText=JSON.stringify(sendObj);
+            ws.send(sendText);
+            // document.getElementById("txtMessage").value="";
+        }
+    </script>
+</html>
