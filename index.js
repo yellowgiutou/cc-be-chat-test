@@ -1,34 +1,9 @@
 const inquirer = require('inquirer');
+const server = require("./server");
+const cmdHandler=require("./cmdImpl/cmdHandler");
 
-const run = async () => {
-  const { name } = await askName();
-  while (true) {
-    const answers = await askChat();
-    const { message } = answers;
-    console.log(`${name}: `, message);
-  }
-};
+//启动服务器
+server.start();
 
-const askChat = () => {
-  const questions = [
-    {
-      name: "message",
-      type: "input",
-      message: "Enter chat message:"
-    }
-  ];
-  return inquirer.prompt(questions);
-};
-
-const askName = () => {
-  const questions = [
-    {
-      name: "name",
-      type: "input",
-      message: "Enter your name:"
-    }
-  ];
-  return inquirer.prompt(questions);
-};
-
-run();
+//启动命令行处理器
+// cmdHandler.run();

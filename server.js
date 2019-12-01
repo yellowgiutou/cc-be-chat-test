@@ -1,6 +1,6 @@
 // 服务端入口包
 const ws = require("nodejs-websocket");
-const chatMessageHandler = require("./chatMessageHandler");
+const chatMessageHandler = require("./chatImpl/chatMessageHandler");
 
 function start() {
     let wsServer = ws.createServer(function (conn) {
@@ -32,7 +32,7 @@ function start() {
 
     }).listen(10000);
 
-    console.log("服务端启动成功~");
+    console.log("服务端启动成功~ 端口号：", 100000);
 }
 
 module.exports.start = start;

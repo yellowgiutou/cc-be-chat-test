@@ -1,14 +1,12 @@
 //聊天消息处理类
-const chatRoom = require("./chatRoom");
-const chatMessage = require("./chatMessage");
-const chatUser = require("./chatUser");
+const chatRoom = require("../model/chatRoom");
+const chatMessage = require("../comm/chatMessage");
+const chatUser = require("../model/chatUser");
 const sendObj = require("../comm/sendObj");
 const dfaUtil = require("../dfa/dfaUtil");
-const mgz = require("./mgzlist2");
 
 //定义房间
 const room = new chatRoom();
-const chatDfa = new dfaUtil(mgz.WorldList);
 
 //类型处理字典
 const typeHanlder = new Map();
@@ -43,7 +41,7 @@ module.exports.sendAllUserInfo = function (server, sendObj) {
 
 
 //加载需要自动注册的模块
-const gethistory = require("./chatImpl/gethistory");
-const input_chat = require("./chatImpl/input_chat");
-const sendMsg = require("./chatImpl/sendMsg");
+const gethistory = require("./gethistory");
+const input_chat = require("./input_chat");
+const sendMsg = require("./sendMsg");
 

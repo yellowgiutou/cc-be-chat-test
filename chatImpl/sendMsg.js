@@ -1,9 +1,10 @@
-const chatMessageHandler = require("../chatMessageHandler");
-const sendObj = require("../../comm/sendObj");
-const chatMessage = require("../chatMessage");
-const chatUser = require("../chatUser");
-const dfaUtil = require("../../dfa/dfaUtil");
-const mgz = require("../mgzlist2");
+const chatMessageHandler = require("./chatMessageHandler");
+const sendObj = require("../comm/sendObj");
+const chatMessage = require("../comm/chatMessage");
+const chatUser = require("../model/chatUser");
+const dfaUtil = require("../dfa/dfaUtil");
+const mgz = require("./mgzlist");
+const codeType = require("../comm/codeType");
 
 const chatDfa = new dfaUtil(mgz.WorldList);
 
@@ -32,7 +33,7 @@ function sendMsg(room, server, conn, reqObj) {
 
     //广播
     let newSendObj = new sendObj();
-    newSendObj.Code = "sendmsg";
+    newSendObj.Code = codeType.sendMsg;
     newSendObj.Message = newmsg;
     newSendObj.Status = 0;
     newSendObj.SendTime = new Date();
@@ -41,4 +42,4 @@ function sendMsg(room, server, conn, reqObj) {
 
 
 //注册回调方法
-chatMessageHandler.addHandler("sendmsg", sendMsg);
+chatMessageHandler.addHandler(codeType.sendMsg, sendMsg);
