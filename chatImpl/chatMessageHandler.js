@@ -24,6 +24,7 @@ module.exports.recoverMessage = function (server, conn, msgStr) {
 
 //连接关闭
 module.exports.conClose = function (conn) {
+    //todo byron 因暂时没找到conn的唯一id，则暂时这样子实现，应该有唯一id，就可以通过唯一id和用户绑定，然后进行相应的操作
     room.removeUser_conn(conn);
 }
 
@@ -39,6 +40,10 @@ module.exports.sendAllUserInfo = function (server, sendObj) {
     })
 };
 
+//聊天室对象
+module.exports.getRoom = function () {
+    return room;
+};
 
 //加载需要自动注册的模块
 const gethistory = require("./gethistory");

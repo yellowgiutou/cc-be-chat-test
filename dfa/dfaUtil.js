@@ -1,6 +1,7 @@
 const node = require("./node");
 const nodeFlag = require("./nodeFlag");
 var util = require('util');
+const objHelp = require("../comm/objHelp");
 
 function dfaUtil(worldList) {
     //初始化
@@ -13,14 +14,14 @@ function dfaUtil(worldList) {
 
         //如果存在，且index已经是chArr最后一个字符，则说明子节点应该是一个短节点；
         //如果该子节点的Flag=Normal，则将其设置为ShortTerminal
-        if (typeof (childNode) != "undefined" && index == (str.length - 1) && childNode.Flag == nodeFlag.Normal) {
+        if (objHelp.isNull(childNode) == false && index == (str.length - 1) && childNode.Flag == nodeFlag.Normal) {
             childNode.Flag = nodeFlag.ShortTerminal;
         }
 
         //如果不存在此节点，则创建节点，并添加到当前节点的子节点列表中
         //  1、判断是否为最后一个字符，如果是则设置为长终节点；
         //  2、同时需要判断当前节点是否为长终节点，如果是则需要将其置为短终节点（因为具有子节点的一定不能是长终节点，而只能是短终节点）
-        if (typeof (childNode) == "undefined") {
+        if (objHelp.isNull(childNode)) {
             childNode = new node(str[index], nodeFlag.Normal);
 
             //注释1
@@ -57,7 +58,7 @@ function dfaUtil(worldList) {
         for (let index = 0; index < inputStr.length; index++) {
             const ch = inputStr[index];
             node = node.getChild(ch);
-            if (typeof (node) == "undefined") {
+            if (objHelp.isNull(node)) {
                 //如果没有找到匹配的节点，说明此轮判断结束
                 //需要判断是否有符合条件的短搜索路径
                 if (roundIndexList.length > 0) {
@@ -74,7 +75,7 @@ function dfaUtil(worldList) {
                         }
                     }
 
-                    if (typeof (lastItem) == "undefined") {
+                    if (objHelp.isNull(lastItem)) {
                         index = index - roundIndexList.length;
                     } else {
                         // 将本轮的索引列表添加到最终的索引列表中
@@ -136,7 +137,7 @@ function dfaUtil(worldList) {
                         }
                     }
 
-                    if (typeof (lastItem) == "undefined") {
+                    if (objHelp.isNull(lastItem)) {
                         index = index - (roundIndexList.length - 1);
                     } else {
 
@@ -185,7 +186,7 @@ function dfaUtil(worldList) {
                 }
             }
 
-            if (typeof (mathItem) == "undefined") {
+            if (objHelp.isNull(mathItem)) {
                 newStr += ech;
             } else {
                 newStr += replaceCh;

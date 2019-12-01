@@ -1,21 +1,21 @@
 // 显示所有用户
-const cmdType = require("../../comm/codeType");
+const cmdType = require("../comm/codeType");
 const cmdHandler = require("./cmdHandler");
-const chatHandler = require("./chatMessageHandler");
+const chatHandler = require("../chatImpl/chatMessageHandler");
 
 // 获取用户列表
-function list(room, server, conn, reqObj) {
+function list(cmdStr) {
     //返回历史消息
-    const allMessages = room.getMessageList();
-    const historySendObj = new sendObj();
-    historySendObj.Code = codeType.getHistory;
-    historySendObj.Message = allMessages;
-    historySendObj.Status = 0;
-    historySendObj.SendTime = new Date();
-
-    const sendStr = JSON.stringify(historySendObj);
-    conn.sendText(sendStr);
+    let userList = chatHandler.getRoom().getUserList();
+    if (userList.length > 0) {
+        for (let index = 0; index < userList.length; index++) {
+            const user = userList[index];
+            console.log("用户名：%s",user.Name);
+        }
+    } else {
+        console.log("暂无用户~");
+    }
 }
 
 //注册回调方法
-cmdHandler.addHandler(codeType.cmd_list, list);
+cmdHandler.addHandler(cmdType.cmd_list, list);

@@ -1,7 +1,6 @@
 const chatMessageHandler = require("./chatMessageHandler");
 const sendObj = require("../comm/sendObj");
 const chatMessage = require("../comm/chatMessage");
-const chatUser = require("../model/chatUser");
 const dfaUtil = require("../dfa/dfaUtil");
 const mgz = require("./mgzlist");
 const codeType = require("../comm/codeType");
@@ -10,18 +9,8 @@ const chatDfa = new dfaUtil(mgz.WorldList);
 
 //发送消息
 function sendMsg(room, server, conn, reqObj) {
-    //判断是否新用户进入
-    const info = reqObj.Message;
-    if (room.getUser(info.UserName) == false) {
-        //如果是新用户，则添加到用户列表
-        const newUser = new chatUser();
-        newUser.Name = info.UserName;
-        newUser.LoginTime = new Date();
-        newUser.Conn = conn;
-        room.addUser(newUser);
-    }
-
     //处理敏感字
+    const info = reqObj.Message;
     let newMessage = chatDfa.handleWord(info.Message, "*");
 
     //添加记录消息记录

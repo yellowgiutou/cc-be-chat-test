@@ -1,3 +1,6 @@
+var util = require('util');
+const objHelp = require("../comm/objHelp");
+
 function chatRoom() {
 	this.MessageList = [];
 	this.UserMap = new Map();
@@ -20,7 +23,8 @@ function chatRoom() {
 
 	//获取用户列表
 	this.getUserList = function () {
-		const userList = [];
+		let userList = [];
+		// console.log(util.inspect(this.UserMap, false, null));
 		for (key in this.UserMap) {
 			userList.push(this.UserMap[key]);
 		}
@@ -40,16 +44,17 @@ function chatRoom() {
 
 	//移除指定用户(根据用户名称)
 	this.removeUser_name = function (name) {
-		if (this.UserMap[name]) {
+		let oldUser = this.UserMap[name];
+		if (objHelp.isNull(oldUser)) {
 			delete this.UserMap[name];
 		}
 	}
 
 	//移除指定用户(根据连接对象)
 	this.removeUser_conn = function (conn) {
-		const removeName = "";
+		let removeName = "";
 		for (var key of this.UserMap) {
-			const tempUser = this.UserMap[key];
+			let tempUser = this.UserMap[key];
 			if (tempUser.Conn == conn) {
 				removeName = tempUser.Name;
 			}

@@ -5,9 +5,9 @@
 	c.接收其他用户的聊天消息  ok
 	d.敏感字过滤 ok
 	e.命令功能
-		1./stats username 显示用户登录时长
-		2./list  显示所有用户
-		3./popular 显示最近5s使用过的命令
+		1./stats username 显示用户登录时长 ok
+		2./list  显示所有用户 ok
+		3./popular 显示最近5s使用过的命令 ok
 3.单元测试
 4.设计文档
 5.文档
