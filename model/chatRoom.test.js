@@ -1,4 +1,4 @@
-import test from 'ava';
+const test = require("ava");
 
 const chatUser = require("./chatUser");
 const chatRoom = require("./chatRoom");
@@ -15,16 +15,42 @@ test("addMessage", t => {
     room.addMessage(newChatMsg);
 
     let messgeList = room.getMessageList();
-    t.is(messgeList.length==1);
+    t.is(messgeList.length, 1);
 });
 
-//添加用户
+//添加用户，获取
+test("addUser", t => {
+    let newChatUser = new chatUser();
+    newChatUser.Name = "byron_ava_addUser";
+    newChatUser.LoginTime = new Date();
 
-//获取用户
+    let room = new chatRoom();
+    room.addUser(newChatUser);
 
-//获取用户列表
+    var userList = room.getUserList();
+    
+    //判断数量
+    t.is(userList.length, 1);
+
+    //判断名字
+    let getUser = room.getUser(newChatUser.Name);
+    t.is(getUser.Name, newChatUser.Name);
+});
 
 //移除用户-根据名称
+//添加用户，获取
+test("delUser", t => {
+    let newChatUser = new chatUser();
+    newChatUser.Name = "byron_ava_delUser";
+    newChatUser.LoginTime = new Date();
 
-//移除用户-根据conn
+    let room = new chatRoom();
+    room.addUser(newChatUser);
 
+    //移除用户
+    room.removeUser_name(newChatUser.Name);
+
+    //判断数量
+    var userList = room.getUserList();
+    t.is(userList.length, 1);
+});
